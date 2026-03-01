@@ -78,45 +78,52 @@ Displays `/tmp/jpg/latest.jpg` at 1 fps using `feh` with watchdog restart.
 cd dvb-s
 ./autobeacon.sh
 ```
-Features:
-    • FIFO recreated every cycle
-    • dvbs2 process auto-restart
-    • Dummy writer to prevent FIFO EOF
-    • 180 sec TX + 60 sec idle loop
-    • Full cleanup on SIGINT/SIGTERM
-    • Power-cycle tolerant design
+### Features
 
-Beacon Cycle Structure
-prepare FIFO
-start dvbs2
-start dummy writer
-start ffmpeg (TS injection + 1fps JPEG monitor)
-wait TX duration
-cleanup processes
-sleep
-repeat
+- FIFO recreated every cycle
+- `dvbs2` process auto-restart
+- Dummy writer to prevent FIFO EOF
+- 180 sec TX + 60 sec idle loop
+- Full cleanup on SIGINT/SIGTERM
+- Power-cycle tolerant design
 
-Power-Cycle Testing (Next Phase)
+### Beacon Cycle Structure
+
+1. Prepare FIFO
+2. Start `dvbs2`
+3. Start dummy writer
+4. Start `ffmpeg` (TS injection + 1 fps JPEG monitor)
+5. Wait TX duration
+6. Cleanup processes
+7. Sleep
+8. Repeat
+
+### Power-Cycle Testing (Next Phase)
+
 Planned tests:
-    1. Software reboot repetition
-    2. Hard power cut during idle
-    3. Hard power cut during active TX
-    4. FIFO integrity verification after reboot
+
+1. Software reboot repetition
+2. Hard power cut during idle
+3. Hard power cut during active TX
+4. FIFO integrity verification after reboot
+
 Validation checklist:
-    • /tmp/in.ts recreated as FIFO
-    • No orphan dvbs2/ffmpeg processes
-    • JPEG monitoring resumes
-    • Log regeneration confirmed
 
-Repository Structure
-scripts/    beacon and monitoring scripts
-docs/       operational notes
-configs/    safe public configuration examples
+- `/tmp/in.ts` recreated as FIFO
+- No orphan `dvbs2` / `ffmpeg` processes
+- JPEG monitoring resumes
+- Log regeneration confirmed
 
-Status
+### Repository Structure
 
-✔ 24-hour endurance test completed
-→ Ready for power-cycle validation
+- `scripts/` — beacon and monitoring scripts
+- `docs/` — operational notes
+- `configs/` — safe public configuration examples
+
+### Status
+
+- ✅ 24-hour endurance test completed → Ready for power-cycle validation
+- → Ready for power-cycle validation
 
 Notes
 
