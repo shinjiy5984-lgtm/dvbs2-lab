@@ -1,6 +1,19 @@
 # dvbs2-lab
 Raspberry Pi DVB-S2 experiment
 
+~/dvb-s/
+│
+├── RF_FIFO_dvbs2_tx_rx.py      # ★ 本番用（CLI / FIFO用）
+├── RF_UDP_dvbs2_tx.grc         # GUI検証用（参考・保存用）
+├── autobeacon.sh               # ビーコン起動スクリプト
+├── monitor.sh                  # モニタースクリプト
+│
+├── data/
+│   ├── out_800x480_av_mp2.ts   # 試験用TS（1回だけ生成）
+│   └── udp.out                 # デバッグ出力（任意）
+│
+└── README.md
+
 # dvbs2-lab
 Headless DVB-S2 beacon experiment using GNU Radio 3.10 + gr-dvbs2.  
 Validated on Raspberry Pi 5 (64-bit).
