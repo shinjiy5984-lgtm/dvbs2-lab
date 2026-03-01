@@ -122,10 +122,9 @@ Validation checklist:
 
 ### Status
 
-- ✅ 24-hour endurance test completed → Ready for power-cycle validation
-- → Ready for power-cycle validation
+- ✅ 24-hour endurance test completed → Ready for power-cycle validation → Ready for power-cycle validation
 
-Notes
+### Notes
 
 This repository focuses on operational stability of DVB-S2 beacon systems under constrained hardware environments.
 
@@ -134,21 +133,9 @@ Designed for reproducible headless operation.
 
 ---
 
-このREADMEは：
+## この README について
 
 - 技術的に十分具体的
 - 余計な個人情報なし
 - 公開しても安全
 - エンジニアが読めばすぐ理解できる構成
-
-になっています。
-
----
-
-もしよければ次に：
-
-- 「学術風に格上げ版」
-- 「シリコンバレー仕様の硬質版」
-- 「論文形式アブストラクト付き版」
-
-どれにしますか？
