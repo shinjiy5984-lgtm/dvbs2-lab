@@ -1,0 +1,846 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: Custom
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: DVB-S2 Loopback Tx/Rx Simulation
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: dvbs2_tx_rx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: DVB-S2 Tx/Rx Simulation
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 4.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: Es
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 372.0]
+    rotation: 0
+    state: enabled
+- name: EsN0
+  id: variable
+  parameters:
+    comment: ''
+    value: 10 ** (esn0_db / 10)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 372.0]
+    rotation: 0
+    state: enabled
+- name: N0
+  id: variable
+  parameters:
+    comment: ''
+    value: Es / EsN0
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 372.0]
+    rotation: 0
+    state: enabled
+- name: code_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: modcod.upper().replace("8PSK", "").replace("QPSK", "")
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 212.0]
+    rotation: 0
+    state: enabled
+- name: constellation
+  id: variable
+  parameters:
+    comment: ''
+    value: modcod.replace(code_rate, "")
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 212.0]
+    rotation: 0
+    state: true
+- name: esn0_db
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: tabs@0
+    label: Es/N0 (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.1'
+    stop: '20'
+    value: snr
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 308.0]
+    rotation: 0
+    state: true
+- name: n_rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: int(2*rrc_delay*sps) + 1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 212.0]
+    rotation: 0
+    state: enabled
+- name: pilot_len
+  id: variable
+  parameters:
+    comment: ''
+    value: int((360-1)/16)*36
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [696, 276.0]
+    rotation: 0
+    state: true
+- name: plframe_len
+  id: variable
+  parameters:
+    comment: ''
+    value: '33282'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 276.0]
+    rotation: 0
+    state: true
+- name: plheader_len
+  id: variable
+  parameters:
+    comment: ''
+    value: '90'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 276.0]
+    rotation: 0
+    state: true
+- name: qtgui_freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: tabs@0
+    label: Frequency Offset (Hz)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: -sym_rate/4
+    step: 1e3
+    stop: sym_rate/4
+    value: freq_offset
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 308.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: sym_rate * sps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [792, 212.0]
+    rotation: 0
+    state: enabled
+- name: agc_gain
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: AGC gain
+    short_id: ''
+    type: eng_float
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 212.0]
+    rotation: 0
+    state: true
+- name: agc_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: AGC update rate
+    short_id: ''
+    type: eng_float
+    value: 1e-5
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 212.0]
+    rotation: 0
+    state: true
+- name: agc_ref
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: AGC's reference value
+    short_id: ''
+    type: eng_float
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [432, 212.0]
+    rotation: 0
+    state: true
+- name: att
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: transmit attenation
+    short_id: j
+    type: eng_float
+    value: '10.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1136, 260.0]
+    rotation: 0
+    state: true
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/shinji-y/data/udp.out
+    type: byte
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 644.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: /tmp/in.ts
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'True'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 604.0]
+    rotation: 0
+    state: enabled
+- name: debug
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: debugging level
+    short_id: d
+    type: intx
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [984, 4.0]
+    rotation: 0
+    state: true
+- name: dtv_dvb_bbheader_bb_0
+  id: dtv_dvb_bbheader_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fecblocks: '168'
+    framesize1: FECFRAME_NORMAL
+    framesize2: FECFRAME_NORMAL
+    inband: INBAND_OFF
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mode: INPUTMODE_NORMAL
+    rate1: C1_2
+    rate2: C1_3
+    rate3: C1_4
+    rate4: C1_5_MEDIUM
+    rate5: C1_4
+    rolloff: RO_0_20
+    standard: STANDARD_DVBS2
+    tsrate: '4000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [208, 476.0]
+    rotation: 0
+    state: enabled
+- name: dtv_dvb_bbscrambler_bb_0
+  id: dtv_dvb_bbscrambler_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    framesize1: FECFRAME_NORMAL
+    framesize2: FECFRAME_NORMAL
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate1: C1_2
+    rate2: C1_3
+    rate3: C1_4
+    rate4: C1_5_MEDIUM
+    rate5: C1_4
+    standard: STANDARD_DVBS2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 484.0]
+    rotation: 0
+    state: enabled
+- name: dtv_dvb_bch_bb_0
+  id: dtv_dvb_bch_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    framesize1: FECFRAME_NORMAL
+    framesize2: FECFRAME_NORMAL
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate1: C1_2
+    rate2: C1_3
+    rate3: C1_4
+    rate4: C1_5_MEDIUM
+    rate5: C1_4
+    standard: STANDARD_DVBS2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 484.0]
+    rotation: 0
+    state: enabled
+- name: dtv_dvb_ldpc_bb_0
+  id: dtv_dvb_ldpc_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: MOD_OTHER
+    framesize1: FECFRAME_NORMAL
+    framesize2: FECFRAME_NORMAL
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate1: C1_2
+    rate2: C1_3
+    rate3: C1_4
+    rate4: C1_5_MEDIUM
+    rate5: C1_4
+    standard: STANDARD_DVBS2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 476.0]
+    rotation: 0
+    state: enabled
+- name: dtv_dvbs2_interleaver_bb_0
+  id: dtv_dvbs2_interleaver_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: MOD_QPSK
+    framesize: FECFRAME_NORMAL
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate1: C1_4
+    rate2: C1_5_MEDIUM
+    rate3: C1_4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 484.0]
+    rotation: 0
+    state: enabled
+- name: dtv_dvbs2_modulator_bc_0
+  id: dtv_dvbs2_modulator_bc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: MOD_QPSK
+    framesize: FECFRAME_NORMAL
+    interpolation: INTERPOLATION_OFF
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate1: C1_4
+    rate2: C1_5_MEDIUM
+    rate3: C1_4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 588.0]
+    rotation: 180
+    state: enabled
+- name: dtv_dvbs2_physical_cc_0
+  id: dtv_dvbs2_physical_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: MOD_QPSK
+    framesize: FECFRAME_NORMAL
+    goldcode: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pilots: PILOTS_ON
+    rate1: C1_4
+    rate2: C1_5_MEDIUM
+    rate3: C1_4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 580.0]
+    rotation: 180
+    state: enabled
+- name: frame_size
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: FECFRAME size
+    short_id: f
+    type: str
+    value: normal
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 4.0]
+    rotation: 0
+    state: true
+- name: freq
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: transmit frequency
+    short_id: z
+    type: complex
+    value: '438080000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [976, 260.0]
+    rotation: 0
+    state: true
+- name: freq_offset
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: simulated carrier frequency offset in Hz
+    short_id: ''
+    type: eng_float
+    value: '1000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 340.0]
+    rotation: 0
+    state: true
+- name: gold_code
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Gold code
+    short_id: ''
+    type: intx
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 4.0]
+    rotation: 0
+    state: true
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: '20.0'
+    bandwidth: '2000000'
+    buffer_size: '32768'
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: freq
+    fstop: '0'
+    len_tag_key: ''
+    samplerate: samp_rate
+    type: fc32
+    uri: usb:1.2.5
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 748.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from math import pi, sqrt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 132.0]
+    rotation: 0
+    state: true
+- name: in_file
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: path to input file containing an MPEG TS stream
+    short_id: ''
+    type: str
+    value: /home/shinji-y/data/test.ts
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 340.0]
+    rotation: 0
+    state: true
+- name: interp_fir_filter_xxx_0
+  id: interp_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    interp: int(sps / 2)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_delay: '0'
+    taps: firdes.root_raised_cosine(sps, samp_rate, sym_rate, rolloff, n_rrc_taps)
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 604.0]
+    rotation: 180
+    state: true
+- name: modcod
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: MODCOD
+    short_id: m
+    type: str
+    value: QPSK1/4
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 4.0]
+    rotation: 0
+    state: true
+- name: pl_freq_est_period
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: PL synchronizer's frequency estimation period in frames
+    short_id: ''
+    type: intx
+    value: '20'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 116.0]
+    rotation: 0
+    state: true
+- name: rolloff
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: rolloff factor
+    short_id: r
+    type: eng_float
+    value: '0.2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 4.0]
+    rotation: 0
+    state: true
+- name: rrc_delay
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: RRC filter delay in symbol periods
+    short_id: ''
+    type: intx
+    value: '25'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 116.0]
+    rotation: 0
+    state: true
+- name: rrc_nfilts
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: number of branches on the polyphase RRC filter
+    short_id: ''
+    type: intx
+    value: '128'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 116.0]
+    rotation: 0
+    state: true
+- name: snr
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: starting SNR in dB
+    short_id: ''
+    type: eng_float
+    value: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 340.0]
+    rotation: 0
+    state: true
+- name: sps
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: oversampling ratio in samples per symbol
+    short_id: o
+    type: eng_float
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 4.0]
+    rotation: 0
+    state: true
+- name: sym_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: symbol rate in bauds
+    short_id: s
+    type: intx
+    value: '333000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 4.0]
+    rotation: 0
+    state: true
+- name: sym_sync_damping
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: symbol synchronizer's damping factor
+    short_id: ''
+    type: eng_float
+    value: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 116.0]
+    rotation: 0
+    state: true
+- name: sym_sync_loop_bw
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: symbol synchronizer's loop bandwidth
+    short_id: ''
+    type: eng_float
+    value: '0.0045'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [680, 116.0]
+    rotation: 0
+    state: true
+- name: tabs
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 0,0
+    label0: Simulation
+    label1: Frequency Correction
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Symbol Sync
+    label3: Frame Recovery
+    label4: Phase Recovery
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 180.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [blocks_file_source_0, '0', blocks_file_sink_0, '0']
+- [blocks_file_source_0, '0', dtv_dvb_bbheader_bb_0, '0']
+- [dtv_dvb_bbheader_bb_0, '0', dtv_dvb_bbscrambler_bb_0, '0']
+- [dtv_dvb_bbscrambler_bb_0, '0', dtv_dvb_bch_bb_0, '0']
+- [dtv_dvb_bch_bb_0, '0', dtv_dvb_ldpc_bb_0, '0']
+- [dtv_dvb_ldpc_bb_0, '0', dtv_dvbs2_interleaver_bb_0, '0']
+- [dtv_dvbs2_interleaver_bb_0, '0', dtv_dvbs2_modulator_bc_0, '0']
+- [dtv_dvbs2_modulator_bc_0, '0', dtv_dvbs2_physical_cc_0, '0']
+- [dtv_dvbs2_physical_cc_0, '0', interp_fir_filter_xxx_0, '0']
+- [interp_fir_filter_xxx_0, '0', iio_pluto_sink_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
