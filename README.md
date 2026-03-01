@@ -2,59 +2,78 @@
 Raspberry Pi DVB-S2 experiment
 
 # dvbs2-lab
-
-Raspberry Pi 5 (64-bit) DVB-S2 beacon experiment using GNU Radio 3.10 + gr-dvbs2.  
-Headless-first design for long-duration stability testing.
-
----
-
-## System Overview
-
-**Hardware**
-- Raspberry Pi 5 (64-bit OS)
-- USB camera (optional for live input)
-- SDR TX chain (external)
-
-**Software**
-- GNU Radio 3.10
-- gr-dvbs2
-- ffmpeg
-- Bash automation
-- Headless operation (no desktop dependency)
+Headless DVB-S2 beacon experiment using GNU Radio 3.10 + gr-dvbs2.  
+Validated on Raspberry Pi 5 (64-bit).
 
 ---
 
-## Design Principles
+## Power-Cycle Validation
 
-- Headless-first operation
-- Minimal CPU load
-- No memory growth
-- No swap usage
-- Automatic process cleanup
-- FIFO-based TS injection
-- 1 fps JPEG monitoring only (no full video preview)
+The beacon successfully restarted **3 consecutive times** under repeated:
 
----
+- Power OFF
+- Power ON
 
-## 24-Hour Endurance Test Result
+No manual intervention required.
 
-Test duration: 24 hours continuous operation
+This confirms:
 
-- Temperature stable (~35°C)
-- No swap usage
-- No memory growth observed
-- No crash
-- No FIFO deadlock
-- No orphan processes
-
-TX monitoring reduced to 1 fps (JPEG extraction only) to minimize CPU load.
-
-System confirmed stable for long-duration beacon operation.
+- FIFO recreation works
+- No orphan processes remain
+- Beacon restarts cleanly
+- Headless operation is stable
 
 ---
 
-## Operation Windows
+## GUI Flowgraph Warning
 
+### RF_UDP_dvbs2_tx.grc
+
+Opening this flowgraph in GNU Radio and generating Python code will produce a **GUI-based transmitter**.
+
+This version:
+
+- Launches a graphical interface
+- Is not suitable for SSH / headless operation
+
+---
+
+## Recommended: CLI Version
+
+### RF_FIFO_dvbs2_tx_rx.py
+
+This script:
+
+- Removes all GUI components
+- Is designed for CLI execution
+- Is suitable for SSH-based headless systems
+- Is strongly recommended for beacon operation
+
+---
+
+## Step 1 — Generate Test TS (Run Once)
+
+Create a DVB-S2 test stream file for beacon operation:
+
+```bash
+mkdir -p ~/dvb-s/data
+cd ~/dvb-s/data
+
+ffmpeg -y \
+  -f lavfi -i testsrc2=size=800x480:rate=15 \
+  -f lavfi -i sine=frequency=1000:sample_rate=22050 \
+  -vf format=yuv420p \
+  -c:v libx264 -preset veryfast -tune zerolatency \
+  -profile:v baseline -level 3.0 \
+  -g 30 -keyint_min 30 -sc_threshold 0 \
+  -b:v 120k -maxrate 150k -bufsize 300k \
+  -c:a mp2 -ac 1 -ar 22050 -b:a 24k \
+  -t 240 \
+  -muxrate 333k \
+  -f mpegts out_800x480_av_mp2.ts
+```
+
+## Beacon Startup Procedure
 ### Window 1 – Preparation
 
 ```bash
@@ -98,22 +117,6 @@ cd dvb-s
 7. Sleep
 8. Repeat
 
-### Power-Cycle Testing (Next Phase)
-
-Planned tests:
-
-1. Software reboot repetition
-2. Hard power cut during idle
-3. Hard power cut during active TX
-4. FIFO integrity verification after reboot
-
-Validation checklist:
-
-- `/tmp/in.ts` recreated as FIFO
-- No orphan `dvbs2` / `ffmpeg` processes
-- JPEG monitoring resumes
-- Log regeneration confirmed
-
 ### Repository Structure
 
 - `scripts/` — beacon and monitoring scripts
@@ -122,7 +125,7 @@ Validation checklist:
 
 ### Status
 
-- ✅ 24-hour endurance test completed → Ready for power-cycle validation
+- ✅ 24-hour endurance test completed
 
 ### Notes
 
