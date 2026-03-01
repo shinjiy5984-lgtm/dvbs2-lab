@@ -62,15 +62,22 @@ mkdir /tmp/jpg
 mkfifo /tmp/in.ts
 ffmpeg -y -f lavfi -i color=size=640x480:rate=1:color=black \
   -frames:v 1 -update 1 /tmp/jpg/latest.jpg
-  
-Window 2 – Monitor
-./dvb-s/monitor.sh
-Displays /tmp/jpg/latest.jpg at 1 fps using feh with watchdog restart.  
+```
 
-Window 3 – Beacon
+### Window 2 – Monitor
+
+```bash
+./dvb-s/monitor.sh
+```
+
+Displays `/tmp/jpg/latest.jpg` at 1 fps using `feh` with watchdog restart.
+
+### Window 3 – Beacon
+
+```bash
 cd dvb-s
 ./autobeacon.sh
-
+```
 Features:
     • FIFO recreated every cycle
     • dvbs2 process auto-restart
