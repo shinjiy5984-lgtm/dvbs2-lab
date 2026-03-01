@@ -12,7 +12,9 @@ Raspberry Pi DVB-S2 experiment
 │   ├── out_800x480_av_mp2.ts
 │   └── udp.out
 └── README.md
-```Validated on Raspberry Pi 5 (64-bit).
+```
+
+Validated on Raspberry Pi 5 (64-bit).
 
 ---
 
