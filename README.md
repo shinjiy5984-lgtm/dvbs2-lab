@@ -122,8 +122,8 @@ Validation checklist:
 
 ### Status
 
-- ✅ 24-hour endurance test completed → Ready for power-cycle validation → Ready for power-cycle validation
-
+- ✅ 24-hour endurance test completed → Ready for power-cycle validation
+- 
 ### Notes
 
 This repository focuses on operational stability of DVB-S2 beacon systems under constrained hardware environments.
