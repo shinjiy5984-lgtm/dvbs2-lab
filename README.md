@@ -1,5 +1,7 @@
 # dvbs2-lab
 Raspberry Pi DVB-S2 experiment
+Validated on Raspberry Pi 5 (64-bit).
+
 ## Directory Structure
 
 ```
@@ -13,8 +15,6 @@ Raspberry Pi DVB-S2 experiment
 │   └── udp.out
 └── README.md
 ```
-
-Validated on Raspberry Pi 5 (64-bit).
 
 ---
 
