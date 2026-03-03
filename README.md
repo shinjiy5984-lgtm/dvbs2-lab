@@ -1,6 +1,32 @@
-# dvbs2-lab
-Raspberry Pi DVB-S2 experiment
-Validated on Raspberry Pi 5 (64-bit).
+# DVB-S2 Auto Beacon
+
+Version: v0.9 (Experimental)
+
+## Tested Environment
+- Raspberry Pi 5 (64-bit OS)
+- ADALM-Pluto
+- GNU Radio 3.10
+
+---
+
+## Default Settings
+
+Default transmit frequency:
+1295000000 Hz (1295 MHz)
+
+---
+
+## Manual Usage
+
+@1295 MHz
+```bash
+./autobeacon.sh
+```
+
+@1298 MHz
+```bash
+./autobeacon.sh 1298000000
+```
 
 ## Directory Structure
 
