@@ -1,5 +1,36 @@
 # DVB-S2 Auto Beacon
 
+# DVB-S2 Lab
+
+This repository contains a reproducible DVB-S2 beacon
+transmitter and receiver experiment built with GNU Radio.
+
+The system runs on Raspberry Pi and uses RTL-SDR for reception.
+
+Features:
+
+• Automatic DVB-S2 beacon transmitter
+• GNU Radio DVB-S2 receiver
+• UDP TS streaming
+• Power-cycle restart validation
+
+```bash
+DVB-S2 TX
+    ↓ RF
+RTL-SDR
+    ↓
+GNU Radio DVB-S2 RX
+    ↓
+tmp.ts
+    ↓
+ffmpeg
+    ↓
+UDP
+    ↓
+ffplay
+```
+
+
 Version: v0.9 (Experimental)
 
 ## Tested Environment
