@@ -9,12 +9,15 @@ The system runs on Raspberry Pi and uses RTL-SDR for reception.
 
 Features:
 
+## System Flow
+```text
 • Automatic DVB-S2 beacon transmitter
 • GNU Radio DVB-S2 receiver
 • UDP TS streaming
 • Power-cycle restart validation
+```
 
-```bash
+```text
 DVB-S2 TX
     ↓ RF
 RTL-SDR
