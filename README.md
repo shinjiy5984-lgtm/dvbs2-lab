@@ -16,7 +16,9 @@ Features:
 • UDP TS streaming
 • Power-cycle restart validation
 ```
+## System Flow
 
+Signal path of the DVB-S2 experiment:
 ```text
 DVB-S2 TX
     ↓ RF
