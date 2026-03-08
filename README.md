@@ -11,6 +11,8 @@ RTL-SDR (SoapySDR)
 ```
 
 # DVB-S2 Lab
+This project provides a complete DVB-S2 SDR receiver chain
+for education and experimentation.
 
 This repository contains a reproducible DVB-S2 beacon
 transmitter and receiver experiment built with GNU Radio.
