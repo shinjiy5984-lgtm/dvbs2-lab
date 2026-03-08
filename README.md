@@ -1,5 +1,13 @@
 # DVB-S2 Auto Beacon
 
+## Dependencies
+
+GNU Radio 3.10
+gr-dvbs2
+gr-dvbs2rx
+ffmpeg
+RTL-SDR (SoapySDR)
+
 # DVB-S2 Lab
 
 This repository contains a reproducible DVB-S2 beacon
