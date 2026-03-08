@@ -2,11 +2,13 @@
 
 ## Dependencies
 
+```text
 GNU Radio 3.10
 gr-dvbs2
 gr-dvbs2rx
 ffmpeg
 RTL-SDR (SoapySDR)
+```
 
 # DVB-S2 Lab
 
