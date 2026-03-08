@@ -246,7 +246,7 @@ cd ~/dvb-s
 Start the receiver only after the transmitter begins emitting the DVB-S2 signal.
 ```bash
 cd ~/dvb-s
-./RX.sh
+./RF_UDP_dvbs2_rx.py
 ```
 
 Important:
