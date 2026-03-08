@@ -36,6 +36,11 @@ Default transmit frequency:
 ├── RF_UDP_dvbs2_tx.grc
 ├── autobeacon.sh
 ├── monitor.sh
+├── RF_FIFO_dvbs2_tx_rx.py
+├── RF_UDP_dvbs2_rx.py
+├── RF_UDP_dvbs2_tx.grc
+├── dvbs2rx_rx_hier.grc
+├── RX.sh
 ├── data/
 │   ├── out_800x480_av_mp2.ts
 │   └── udp.out
@@ -134,6 +139,116 @@ Displays `/tmp/jpg/latest.jpg` at 1 fps using `feh` with watchdog restart.
 cd dvb-s
 ./autobeacon.sh
 ```
+### Installing the dvbs2rx_rx_hier GNU Radio Block
+
+The file dvbs2rx_rx_hier.grc defines a hierarchical GNU Radio block used by the DVB-S2 receiver.
+To install and use this block:
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/shinjiy5984-lgtm/dvbs2-lab.git
+cd dvbs2-lab
+```
+
+### 2. Copy the block definition
+
+GNU Radio loads custom hierarchical blocks from the user state directory.
+Copy the .grc file to the GNU Radio state directory:
+```bash
+mkdir -p ~/.local/state/gnuradio
+cp dvbs2rx_rx_hier.grc ~/.local/state/gnuradio/
+```
+### 3. Start GNU Radio Companion
+```bash
+gnuradio-companion
+```
+
+The block dvbs2rx_rx_hier will now be available for use.
+You can also generate the Python implementation directly:
+```bash
+gnuradio-companion dvbs2rx_rx_hier.grc
+```
+Press F5 to generate the Python code.
+
+### DVB-S2 software receiver Operation Sequence
+
+### The order of operations is important.
+
+### Window 1 – Monitor
+```bash
+mkdir -p /tmp/jpg
+mkfifo /tmp/in.ts
+
+ffmpeg -y -f lavfi -i color=size=640x480:rate=1:color=black \
+-frames:v 1 -update 1 /tmp/jpg/latest.jpg
+
+ffplay udp://@:2000
+```
+This window displays the received MPEG-TS stream.
+
+### Window 2 – DVB-S2 Transmitter
+
+Start the transmitter (Auto Beacon).
+```bash
+cd ~/dvb-s
+./autobeacon.sh 438000000
+```
+### Window 3 – DVB-S2 Software Receiver
+
+Start the receiver only after the transmitter begins emitting the DVB-S2 signal.
+```bash
+cd ~/dvb-s
+./RX.sh
+```
+
+Important:
+If transmission stops, terminate the receiver using CTRL-C.
+
+### Window 4 – TS Forwarding
+
+Start this only after TS packets appear in Window 3.
+Wait about 30 seconds for receiver synchronization.
+```bash
+cd ~/dvb-s
+
+sleep 30
+
+ffmpeg -y -re -re \
+-i tmp.ts \
+-c copy \
+-f mpegts \
+udp://127.0.0.1:2000
+```
+Important:
+If reception stops, terminate using CTRL-C.
+
+### System Flow
+```bash
+DVB-S2 Transmitter
+        ↓
+        RF
+        ↓
+RTL-SDR
+        ↓
+GNU Radio DVB-S2 Receiver
+        ↓
+tmp.ts
+        ↓
+ffmpeg
+        ↓
+UDP Stream
+        ↓
+ffplay
+```
+
+### Key Rule
+```bash
+Start TX first
+→ Start RX
+→ Wait for TS
+→ Start ffmpeg
+```
+
 ### Features
 
 - FIFO recreated every cycle
