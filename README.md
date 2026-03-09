@@ -10,6 +10,96 @@ ffmpeg
 RTL-SDR (SoapySDR)
 ```
 
+## Environment
+This project is tested only on Raspberry Pi OS (64bit).
+```text
+Test environment:
+    • Raspberry Pi 4 / Raspberry Pi 5
+    • Raspberry Pi OS 64bit
+    • GNU Radio 3.10
+    • Headless operation via SSH
+⚠️ Ubuntu is NOT tested and not supported.
+```
+
+## Environment Setup (Raspberry Pi OS)
+```text
+✔ Tested environment
+✔ Not supported environment
+```
+
+1 Install dependencies
+
+```bash
+cd ~
+
+sudo apt update
+
+sudo apt install -y \
+  build-essential cmake pkg-config \
+  git wget curl \
+  python3 python3-pip python3-numpy python3-mako python3-yaml \
+  python3-click python3-click-plugins \
+  libboost-all-dev \
+  libfftw3-dev \
+  libgmp-dev \
+  libusb-1.0-0-dev \
+  libudev-dev \
+  liborc-0.4-dev \
+  libspdlog-dev
+```
+# 2 Documentation tools  
+```bash
+sudo apt install -y doxygen graphviz
+```
+# 3 Additional dependency
+```bash
+sudo apt install -y libpcap-dev
+```
+# 4 Optimize VOLK
+```bash
+volk_profile
+```
+# 5 Install GNU Radio
+```bash
+sudo apt install -y gnuradio gnuradio-dev
+```
+# 6 Clone repositories
+```bash
+cd ~
+
+mkdir src
+cd src
+
+git clone https://github.com/drmpeg/gr-dvbs2.git
+git clone https://github.com/drmpeg/gr-dvbs2rx.git
+```
+# 7 Build gr-dvbs2
+```bash
+cd ~/src/gr-dvbs2
+
+mkdir build
+cd build
+
+cmake ..
+make -j$(nproc)
+
+sudo make install
+sudo ldconfig
+```
+# 8 Build gr-dvbs2rx
+```bash
+cd ~/src/gr-dvbs2rx
+
+mkdir build
+cd build
+
+cmake ..
+make -j$(nproc)
+
+sudo make install
+sudo ldconfig
+```
+
 # DVB-S2 Lab
 This project provides a complete DVB-S2 SDR receiver chain
 for education and experimentation.
