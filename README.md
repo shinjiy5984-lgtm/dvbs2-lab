@@ -1,3 +1,14 @@
+# Goal
+
+Provide the cheapest reproducible DVB-S2 research environment.
+```text
+Hardware:
+Raspberry Pi 5
+RTL-SDR
+```
+# Students can reproduce the system with minimal cost.
+
+
 # DVB-S2 Auto Beacon
 
 ## Dependencies
