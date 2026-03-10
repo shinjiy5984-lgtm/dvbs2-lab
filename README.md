@@ -82,7 +82,7 @@ mkdir src
 cd src
 
 git clone https://github.com/drmpeg/gr-dvbs2.git
-unzip gr-dvbs2.7z
+unzip gr-dvbs2rx.7z
 ```
 # 7 Build gr-dvbs2
 ```bash
@@ -190,7 +190,7 @@ Default transmit frequency:
 ├── RF_UDP_dvbs2_tx.grc
 ├── dvbs2rx_rx_hier.grc
 ├── RX.sh
-├── gr-dvbs2.7z
+├── gr-dvbs2rx.7z
 ├── data/
 │   ├── out_800x480_av_mp2.ts
 │   └── udp.out
