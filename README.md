@@ -1,3 +1,6 @@
+<img width="1920" height="1080" alt="TX and RX" src="https://github.com/user-attachments/assets/03435dcf-e216-4551-ae3f-bd9e9535d6f7" />
+
+
 # Goal
 
 Provide the cheapest reproducible DVB-S2 research environment.
