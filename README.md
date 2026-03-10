@@ -82,7 +82,7 @@ mkdir src
 cd src
 
 git clone https://github.com/drmpeg/gr-dvbs2.git
-git clone https://github.com/drmpeg/gr-dvbs2rx.git
+unzip gr-dvbs2.7z
 ```
 # 7 Build gr-dvbs2
 ```bash
@@ -318,6 +318,7 @@ You can also generate the Python implementation directly:
 gnuradio-companion dvbs2rx_rx_hier.grc
 ```
 Press F5 to generate the Python code.
+### Press F6.
 
 ### DVB-S2 software receiver Operation Sequence
 
