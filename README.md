@@ -25,6 +25,31 @@ Hardware:
 Raspberry Pi 5
 RTL-SDR
 ```
+```text
+Video Source
+      │
+      │
+   MPEG-TS
+      │
+      │
+GNU Radio DVB-S2 TX Pluto+
+      │
+      │
+      RF
+      │
+      │
+RTL-SDR
+      │
+      │
+GNU Radio DVB-S2 RX
+      │
+      │
+UDP stream
+      │
+      │
+Video Player
+```
+
 # Students can reproduce the system with minimal cost.
 
 
@@ -57,7 +82,7 @@ Test environment:
 ✔ Not supported environment
 ```
 
-1 Install dependencies
+# 1 Install dependencies
 
 ```bash
 cd ~
