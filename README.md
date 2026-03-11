@@ -72,7 +72,7 @@ RTL-SDR (SoapySDR)
 This project is tested only on Raspberry Pi OS (64bit).
 ```text
 Test environment:
-    • Raspberry Pi 4 / Raspberry Pi 5
+    • Raspberry Pi 5
     • Raspberry Pi OS 64bit
     • GNU Radio 3.10
     • Headless operation via SSH
@@ -83,6 +83,23 @@ Test environment:
 ```text
 ✔ Tested environment
 ✔ Not supported environment
+```
+# RTL-SDR setup
+write down and save the file
+```bash
+sudo vi /etc/modprobe.d/blacklist-rtl.conf
+```
+
+```bash
+blacklist dvb_usb_rtl28xxu
+blacklist rtl2832
+blacklist rtl2830
+blacklist dvb_usb_v2
+```
+
+```bash
+sudo apt update
+sudo apt install rtl-sdr
 ```
 
 # 1 Install dependencies
