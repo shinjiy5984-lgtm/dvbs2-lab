@@ -85,7 +85,7 @@ Test environment:
 ✔ Not supported environment
 ```
 # RTL-SDR setup
-write down and save the file
+write down and save the file and reboot 
 ```bash
 sudo vi /etc/modprobe.d/blacklist-rtl.conf
 ```
@@ -146,7 +146,7 @@ mkdir src
 cd src
 
 git clone https://github.com/drmpeg/gr-dvbs2.git
-unzip gr-dvbs2rx.7z
+EXtract gr-dvbs2rx.7z
 ```
 # 7 Build gr-dvbs2
 ```bash
@@ -217,7 +217,7 @@ Version: v0.9 (Experimental)
 
 ## Tested Environment
 - Raspberry Pi 5 (64-bit OS)
-- ADALM-Pluto
+- Pluto+
 - GNU Radio 3.10
 
 ---
@@ -377,13 +377,13 @@ cp dvbs2rx_rx_hier.grc ~/.local/state/gnuradio/
 gnuradio-companion
 ```
 
-The block dvbs2rx_rx_hier will now be available for use.
 You can also generate the Python implementation directly:
 ```bash
 gnuradio-companion dvbs2rx_rx_hier.grc
 ```
 Press F5 to generate the Python code.
 ### Press F6.
+The block dvbs2rx_rx_hier will now be available for use.
 
 ### DVB-S2 software receiver Operation Sequence
 
