@@ -1,6 +1,22 @@
 <img width="1920" height="1080" alt="TX and RX" src="https://github.com/user-attachments/assets/03435dcf-e216-4551-ae3f-bd9e9535d6f7" />
 
 
+# Minimal DVB-S2 Laboratory
+
+A fully reproducible DVB-S2 experiment environment built from a clean Raspberry Pi OS installation.
+
+Target users
+
+This project is intended for researchers, students and SDR experimenters.
+
+It assumes familiarity with:
+```text
+• Linux environment
+• GNU Radio
+• SDR concepts
+• RF experimentation
+```
+This is not a beginner-friendly project.　
 # Goal
 
 Provide the cheapest reproducible DVB-S2 research environment.
