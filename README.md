@@ -32,7 +32,10 @@ Video Source
    MPEG-TS
       │
       │
-GNU Radio DVB-S2 TX Pluto+
+GNU Radio DVB-S2 TX
+      │
+      │
+Pluto+
       │
       │
       RF
