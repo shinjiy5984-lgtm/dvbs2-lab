@@ -255,8 +255,11 @@ Default transmit frequency:
 ├── dvbs2rx_rx_hier.grc
 ├── RX.sh
 ├── gr-dvbs2rx.7z
+├── RF_FIFO_dvbs2_experiment.py
+├── experiment.sh
 ├── data/
 │   ├── out_800x480_av_mp2.ts
+│   ├── test_1280x720_30fps_800k.ts
 │   └── udp.out
 └── README.md
 ```
@@ -327,6 +330,21 @@ ffmpeg -y \
   -t 240 \
   -muxrate 333k \
   -f mpegts out_800x480_av_mp2.ts
+
+ffmpeg -y \
+-f lavfi -i testsrc2=size=1280x720:rate=30 \
+-f lavfi -i sine=frequency=1000:sample_rate=22050 \
+-vf format=yuv420p \
+-c:v libx264 -preset ultrafast -tune zerolatency \
+-profile:v baseline -level 3.1 \
+-g 60 -keyint_min 60 -sc_threshold 0 \
+-b:v 550k -minrate 550k -maxrate 550k -bufsize 550k \
+-c:a mp2 -ac 1 -ar 22050 -b:a 32k \
+-muxrate 800k \
+-muxdelay 0 -muxpreload 0 \
+-fflags +genpts -t 240 \
+-mpegts_flags +resend_headers \
+-f mpegts test_1280x720_30fps_800k.ts
 ```
 
 ## Beacon Startup Procedure
@@ -434,8 +452,83 @@ ffmpeg -y -re -re \
 -f mpegts \
 udp://127.0.0.1:2000
 ```
+
+### Window 1 – Monitor
+```bash
+mkdir -p /tmp/jpg
+mkfifo /tmp/in.ts
+ffmpeg -y -f lavfi -i color=size=640x480:rate=1:color=black \
+-frames:v 1 -update 1 /tmp/jpg/latest.jpg
+ffplay udp://@:2000
+```
+This window displays the received MPEG-TS stream.
+
+### Window 2 – DVB-S2 Transmitter
+
+Start the transmitter (Auto Beacon).
+```bash
+./experiment.sh 438000000 8PSK3/5 333000 test_1280x720_30fps_800k.ts
+./experiment.sh 438000000 QPSK1/4 333000 out_800x480_av_mp2.ts
+./experiment.sh 438000000 QPSK1/2 333000 test_1280x720_30fps_800k.ts
+./experiment.sh 438000000 QPSK3/4 333000 test_1280x720_30fps_800k.ts
+```
+### Window 3 – DVB-S2 Software Receiver
+
+Start the receiver only after the transmitter begins emitting the DVB-S2 signal.
+```bash
+./experiment.sh 438000000 8PSK3/5 333000 test_1280x720_30fps_800k.ts
+./experiment.sh 438000000 QPSK1/4 333000 out_800x480_av_mp2.ts
+./experiment.sh 438000000 QPSK1/2 333000 test_1280x720_30fps_800k.ts
+./experiment.sh 438000000 QPSK3/4 333000 test_1280x720_30fps_800k.ts 
+```
+
+Important:
+If transmission stops, terminate the receiver using CTRL-C.
+
+### Window 4 – TS Forwarding
+
+Start this only after TS packets appear in Window 3.
+Wait about 30 seconds for receiver synchronization.
+```bash
+cd ~/dvb-s
+
+sleep 30
+
+ffmpeg -y -re -re \
+-i tmp.ts \
+-c copy \
+-f mpegts \
+udp://127.0.0.1:2000 
+```
+
+
 Important:
 If reception stops, terminate using CTRL-C.
+
+### SDR++ Not tested
+
+```bash
+sudo apt update
+
+sudo apt install -y \
+    git cmake build-essential \
+    libfftw3-dev libglfw3-dev libvolk2-dev \
+    libsoapysdr-dev soapysdr-tools \
+    libairspy-dev libhackrf-dev \
+    librtlsdr-dev
+
+git clone https://github.com/AlexandreRouma/SDRPlusPlus
+cd SDRPlusPlus
+
+mkdir build
+cd build
+
+cmake ..
+make -j$(nproc)
+
+sudo make install
+```
+
 
 ### System Flow
 ```bash
