@@ -472,14 +472,14 @@ Start the transmitter (Auto Beacon).
 ./experiment.sh 438000000 QPSK1/2 333000 test_1280x720_30fps_800k.ts
 ./experiment.sh 438000000 QPSK3/4 333000 test_1280x720_30fps_800k.ts
 ```
-### Window 3 – DVB-S2 Software Receiver
+### Window 3 – DVB-S2 Software Receiver +22KHz offset
 
 Start the receiver only after the transmitter begins emitting the DVB-S2 signal.
 ```bash
-./experiment.sh 438000000 8PSK3/5 333000 test_1280x720_30fps_800k.ts
-./experiment.sh 438000000 QPSK1/4 333000 out_800x480_av_mp2.ts
-./experiment.sh 438000000 QPSK1/2 333000 test_1280x720_30fps_800k.ts
-./experiment.sh 438000000 QPSK3/4 333000 test_1280x720_30fps_800k.ts 
+./RF_UDP_dvbs2_rx.py -g 438022000 -m 8PSK3/5 -s 333000 -o 4
+./RF_UDP_dvbs2_rx.py -g 438022000 -m QPSK1/4 -s 333000 -o 4
+./RF_UDP_dvbs2_rx.py -g 438022000 -m QPSK1/2 -s 333000 -o 4
+./RF_UDP_dvbs2_rx.py -g 438022000 -m QPSK3/4 -s 333000 -o 4 
 ```
 
 Important:
