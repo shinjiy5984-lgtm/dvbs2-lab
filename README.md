@@ -7,6 +7,9 @@
 Started from a simple auto-beacon experiment,
 this project evolved into a fully software-based DVB-S2 TX/RX system on Raspberry Pi.
 
+The receiver is currently unstable, especially under burst conditions.
+However, recovered TS streams are valid and can be reliably played with VLC.
+
 A fully reproducible DVB-S2 experiment environment built from a clean Raspberry Pi OS installation.
 
 Target users
