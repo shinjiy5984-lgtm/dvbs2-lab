@@ -63,6 +63,70 @@ Video Player
 # Students can reproduce the system with minimal cost.
 
 
+# GUI Installation
+
+# Environment
+    Low-cost USB webcam input
+    Modulation limited to QPSK 1/2 (both TX and RX)
+    DVB-S2 transmission at 15 fps
+    1 fps TX monitor implemented
+
+# Compilation
+
+Install dependencies
+```text
+sudo apt install -y build-essential pkg-config libgtk-4-dev
+```
+
+Build
+```
+gcc main4.c -o app pkg-config --cflags --libs gtk4
+```
+Application name: app
+
+# Shell Scripts
+
+Webcam input transmission
+experiment.sh.cam
+
+File-based transmission
+experiment.sh.file
+
+# Directory Setup
+
+# File-based transmission
+```text
+cd dvb-s
+```
+Rename:
+experiment.sh.file → experiment.sh
+Run:
+```text
+./app
+```
+
+# Webcam input transmission
+```text
+mkdir ~/dvb-sv
+cd ~/dvb-sv
+```
+Rename:
+experiment.sh.cam → experiment.sh
+Run:
+```text
+./app
+```
+# Uploaded Files
+    experiment.sh.cam
+    experiment.sh
+    RF_FIFO_dvbs2_experiment.py
+    start_rx.sh
+    stop_rx.sh
+    main4.c
+    stop_tx.sh
+    start_tx.sh
+    experiment.sh.file
+
 # DVB-S2 Auto Beacon
 
 ## Dependencies
