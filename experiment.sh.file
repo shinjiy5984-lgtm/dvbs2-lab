@@ -17,7 +17,7 @@ ABIT="24k"
 SR="22050"
 MUXRATE="333k"
 
-TX_SECONDS=900
+TX_SECONDS=180
 SLEEP_SECONDS=60
 
 DVBS2="./RF_FIFO_dvbs2_experiment.py"
@@ -58,23 +58,15 @@ while true; do
 
   # ffmpeg（3分で停止）
   log "start ffmpeg for ${TX_SECONDS}s : ${CAM} -> TS -> ${FIFO}"
-  timeout "${TX_SECONDS}" ffmpeg -hide_banner -y -loglevel warning \
-  -f v4l2 \
-  -input_format yuyv422 \
-  -video_size 640x480 \
-  -framerate 15 \
-  -i "${CAM}" \
-  -vf format=yuv420p \
-  -c:v libx264 -preset ultrafast -tune zerolatency \
-  -profile:v baseline -level 3.0 \
-  -g 15 -keyint_min 15 -sc_threshold 0 \
-  -b:v 120k -minrate 120k -maxrate 120k -bufsize 240k \
-  -muxrate 333k \
-  -mpegts_flags resend_headers \
-  -muxdelay 0 -muxpreload 0 \
-  -f mpegts "${FIFO}" \
+  timeout "${TX_SECONDS}" ffmpeg -hide_banner -y -re -loglevel warning -re \
+  -stream_loop -1 \
+  -i ~/dvb-s/data/"${INPUT}" \
+  -c copy \
+  -f mpegts \
+  -t 180 \
+  -f mpegts /tmp/in.ts \
   -r 1 -update 1 -q:v 1 /tmp/jpg/latest.jpg \
-  > /tmp/ffmpeg.log 2>&1 &
+    > /tmp/ffmpeg.log 2>&1 &
   FFMPEG_PID=$!
 
   wait "${FFMPEG_PID}" || true

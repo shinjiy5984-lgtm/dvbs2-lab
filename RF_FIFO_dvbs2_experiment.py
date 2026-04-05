@@ -88,7 +88,14 @@ class dvbs2_tx_rx(gr.top_block):
         self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_ccf((int(sps / 2)), firdes.root_raised_cosine(sps, samp_rate, sym_rate, rolloff, n_rrc_taps))
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
 #        self.iio_pluto_sink_0 = iio.fmcomms2_sink_fc32('' if '' else iio.get_pluto_uri(), [True, True], 32768, False)
-        self.iio_pluto_sink_0 = iio.fmcomms2_sink_fc32('usb:1.2.5' if 'usb:1.2.5' else iio.get_pluto_uri(), [True, True], 32768, False)
+#        self.iio_pluto_sink_0 = iio.fmcomms2_sink_fc32('' if '' else iio.get_pluto_uri(192.168.2.1), [True, True], 32768, False)
+#        self.iio_pluto_sink_0 = iio.fmcomms2_sink_fc32('usb:1.2.5' if 'usb:1.2.5' else iio.get_pluto_uri(), [True, True], 32768, False)
+        self.iio_pluto_sink_0 = iio.fmcomms2_sink_fc32(
+            iio.get_pluto_uri(),
+            [True, True],
+            32768,
+            False
+        )
         self.iio_pluto_sink_0.set_len_tag_key('')
         self.iio_pluto_sink_0.set_bandwidth(2000000)
 #        self.iio_pluto_sink_0.set_frequency(freq)

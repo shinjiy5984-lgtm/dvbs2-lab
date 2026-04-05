@@ -62,7 +62,7 @@ while true; do
   -f v4l2 \
   -input_format yuyv422 \
   -video_size 640x480 \
-  -framerate 15 \
+  -framerate 30 \
   -i "${CAM}" \
   -vf format=yuv420p \
   -c:v libx264 -preset ultrafast -tune zerolatency \
@@ -73,7 +73,7 @@ while true; do
   -mpegts_flags resend_headers \
   -muxdelay 0 -muxpreload 0 \
   -f mpegts "${FIFO}" \
-  -r 1 -update 1 -q:v 1 /tmp/jpg/latest.jpg \
+  -r 1 -update 1 -q:v 1 /tmp/jpg/latest.jpg \  
   > /tmp/ffmpeg.log 2>&1 &
   FFMPEG_PID=$!
 
